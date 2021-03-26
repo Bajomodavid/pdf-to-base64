@@ -21,7 +21,8 @@ router.post('/', async (req, res) => {
         const response = await toBase64(req.body.url);
         return res.json({
             status: true,
-            message: response
+            fileExtension: 'pdf',
+            fileBase64EncodedString: response
         }, 200);
     } catch (error) {
         return res.json({
