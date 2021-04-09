@@ -63,7 +63,7 @@ router.post('/forward', async (req, res) => {
         console.log(error);
         return res.json({
             status: false,
-            message: 'Make sure a valid Pdf is at the url sent'
+            message: error
         }, 422);
     }
 });
