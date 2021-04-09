@@ -58,6 +58,7 @@ router.post('/forward', async (req, res) => {
 
         return res.json({
             status: response.statusCode < 300 ? true : false,
+            message: response,
         }, 200);
     } catch (error) {
         console.log(error);
