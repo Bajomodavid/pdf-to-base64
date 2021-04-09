@@ -32,6 +32,42 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.post('/forward', async (req, res) => {
+    try {
+        if(!req.body.url) return res.json({
+            status: false,
+            message: 'file url is required',
+        });
+        const file = await toBase64(req.body.url);
+        const axios = require('axios')
+        const options = {
+            headers: {
+                'Content-Type': 'application/json',
+                'ApiKey': req.body.apikey,
+            }
+        };
+        var base64Result = {};
+        base64Result['fileExtension'] = 'pdf';
+        base64Result['fileBase64EncodedString'] = file;
+        
+        const payload = req.body.payload;
+        payload['MandateRequests'][0]['mandateFile'] = base64Result;
+        const body = payload;
+
+        const response = await axios.post('https://payment-api.cyberpay.ng/api/v1/directdebit/mandate', body, options);
+
+        return res.json({
+            status: response.statusCode < 300 ? true : false,
+        }, 200);
+    } catch (error) {
+        console.log(error);
+        return res.json({
+            status: false,
+            message: 'Make sure a valid Pdf is at the url sent'
+        }, 422);
+    }
+});
+
 const toBase64 = async (url) => {
     const pdf2base64 = require('pdf-to-base64');
     
