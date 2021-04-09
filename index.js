@@ -50,9 +50,9 @@ router.post('/forward', async (req, res) => {
         base64Result['fileExtension'] = 'pdf';
         base64Result['fileBase64EncodedString'] = file;
         
-        const payload = req.body.payload;
+        const payload = JSON.parse(req.body.payload);
         payload['MandateRequests'][0]['mandateFile'] = base64Result;
-        const body = JSON.parse(payload);
+        const body = JSON.stringify(payload);
 
         const response = await axios.post('https://payment-api.cyberpay.ng/api/v1/directdebit/mandate', body, options);
 
