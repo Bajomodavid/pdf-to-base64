@@ -52,7 +52,7 @@ router.post('/forward', async (req, res) => {
         
         const payload = req.body.payload;
         payload['MandateRequests'][0]['mandateFile'] = base64Result;
-        const body = payload;
+        const body = JSON.parse(payload);
 
         const response = await axios.post('https://payment-api.cyberpay.ng/api/v1/directdebit/mandate', body, options);
 
